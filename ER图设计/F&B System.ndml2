@@ -1,0 +1,737 @@
+{
+  "paper": {
+    "name": "A4",
+    "leftMargin": 0.5,
+    "rightMargin": 0.5,
+    "topMargin": 0.5,
+    "bottomMargin": 0.5,
+    "isPortriat": true
+  },
+  "modelVersion": 2.01,
+  "defaultSchema": "default",
+  "server": {
+    "objectType": "Server_LOGICAL",
+    "name": "Default",
+    "schemas": [
+      {
+        "objectType": "Schema_LOGICAL",
+        "name": "default",
+        "tables": [
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "用户 (users)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "用户ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "用户ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "用户名",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "用户名"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "密码",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "密码"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "联系方式",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "联系方式"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "用户ID"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "区域表 (regions)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "区域ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "区域ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "区域名称",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "区域名称"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "上级区域ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "上级区域ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "是否热门区域",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "是否热门区域"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "区域ID",
+                "上级区域ID"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "餐厅 (restaurants)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "餐厅ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "餐厅ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "名称",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "名称"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "地址",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "地址"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "区域ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "区域ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "人均消费",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "人均消费"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "营业时间",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "营业时间"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "类别id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "类别id"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "餐厅ID",
+                "区域ID",
+                "类别id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "菜品 (dishes)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "菜品ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "菜品ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "名称",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "名称"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "价格",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "价格"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "描述",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "描述"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "是否特色菜",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "是否特色菜"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "菜品ID"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "评价 (reviews)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "评价ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "评价ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "用户ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "用户ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "餐厅ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "餐厅ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "评分",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "评分"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "评论内容",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "评论内容"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "评价ID",
+                "用户ID",
+                "餐厅ID"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "特色标签 (tags)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "标签ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "标签ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "标签名",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "标签名"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "标签ID"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "类别表 (categories)",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "类别id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "类别id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "类别_name",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "类别_name"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "类别id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "Entity 1",
+            "comment": "",
+            "oldName": "",
+            "fields": [],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": []
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "订单记录（orders）",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "用户ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "用户ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "餐厅ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "餐厅ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "菜品ID",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "菜品ID"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "消费Money",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "消费Money"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "用户ID",
+                "餐厅ID",
+                "菜品ID"
+              ],
+              "oldName": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "diagrams": [
+    {
+      "name": "Diagram 1",
+      "paperWidth": 1,
+      "paperHeight": 1,
+      "tableFont": "Arial Unicode MS",
+      "tableFontSize": 14,
+      "isBalckWhite": false,
+      "showDBSchemaName": false,
+      "showViewRelations": true,
+      "notation": "default",
+      "showFieldComment": false,
+      "showTableComment": false,
+      "shapes": [
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "用户 (users)",
+          "x": 790,
+          "y": 70,
+          "width": 200,
+          "height": 140,
+          "isBold": false,
+          "titleColor": {
+            "r": 255,
+            "g": 214,
+            "b": 147,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "区域表 (regions)",
+          "x": 40,
+          "y": 310,
+          "width": 230,
+          "height": 120,
+          "isBold": false,
+          "titleColor": {
+            "r": 255,
+            "g": 255,
+            "b": 132,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "餐厅 (restaurants)",
+          "x": 430,
+          "y": 260,
+          "width": 200,
+          "height": 190,
+          "isBold": false,
+          "titleColor": {
+            "r": 255,
+            "g": 157,
+            "b": 157,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "菜品 (dishes)",
+          "x": 410,
+          "y": 560,
+          "width": 240,
+          "height": 150,
+          "isBold": false,
+          "titleColor": {
+            "r": 190,
+            "g": 220,
+            "b": 255,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "评价 (reviews)",
+          "x": 440,
+          "y": 0,
+          "width": 200,
+          "height": 150,
+          "isBold": false,
+          "titleColor": {
+            "r": 200,
+            "g": 255,
+            "b": 160,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "特色标签 (tags)",
+          "x": 770,
+          "y": 340,
+          "width": 200,
+          "height": 90,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "类别表 (categories)",
+          "x": 50,
+          "y": 80,
+          "width": 220,
+          "height": 90,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "订单记录（orders）",
+          "x": 130,
+          "y": 520,
+          "width": 220,
+          "height": 150,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        }
+      ],
+      "layers": [],
+      "relations": [],
+      "viewRelations": []
+    }
+  ]
+}
