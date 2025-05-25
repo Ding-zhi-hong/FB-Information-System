@@ -566,6 +566,18 @@
                 "defaultValue": "",
                 "comment": "",
                 "oldName": "消费Money"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "下单时间",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "下单时间"
               }
             ],
             "foreignKeys": [],
@@ -581,6 +593,132 @@
               ],
               "oldName": ""
             }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "商家",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "商家id",
+                "type": "INTEGER",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "商家id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "联系电话",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "联系电话"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "商家名name",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "商家名name"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "密码",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "密码"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "商家id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "员工",
+            "comment": "",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "pno",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "pno"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "姓名name",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "姓名name"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "职位",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "职位"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "联系方式",
+                "type": "CHAR VARYING",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "",
+                "oldName": "联系方式"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": []
           }
         ]
       }
@@ -604,10 +742,10 @@
           "type": "table",
           "schemaName": "default",
           "tableName": "用户 (users)",
-          "x": 790,
-          "y": 70,
+          "x": 760,
+          "y": 10,
           "width": 200,
-          "height": 140,
+          "height": 130,
           "isBold": false,
           "titleColor": {
             "r": 255,
@@ -620,7 +758,7 @@
           "type": "table",
           "schemaName": "default",
           "tableName": "区域表 (regions)",
-          "x": 40,
+          "x": 110,
           "y": 310,
           "width": 230,
           "height": 120,
@@ -699,11 +837,11 @@
         {
           "type": "table",
           "schemaName": "default",
-          "tableName": "类别表 (categories)",
-          "x": 50,
-          "y": 80,
+          "tableName": "订单记录（orders）",
+          "x": 130,
+          "y": 520,
           "width": 220,
-          "height": 90,
+          "height": 150,
           "isBold": false,
           "titleColor": {
             "r": 55,
@@ -715,11 +853,27 @@
         {
           "type": "table",
           "schemaName": "default",
-          "tableName": "订单记录（orders）",
-          "x": 130,
-          "y": 520,
-          "width": 220,
-          "height": 150,
+          "tableName": "商家",
+          "x": 710,
+          "y": 530,
+          "width": 200,
+          "height": 200,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "员工",
+          "x": 120,
+          "y": 0,
+          "width": 200,
+          "height": 200,
           "isBold": false,
           "titleColor": {
             "r": 55,
