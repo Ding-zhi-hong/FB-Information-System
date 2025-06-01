@@ -20,13 +20,19 @@ CREATE TABLE IF NOT EXISTS 评价 (
     评论内容 VARCHAR(255)
 );
 
+
+
+
 -- 用户表
 CREATE TABLE IF NOT EXISTS 用户 (
-    用户PID INT PRIMARY KEY,
+    用户PID INT NOT NULL AUTO_INCREMENT,
     用户名 VARCHAR(255),
     密码 VARCHAR(255),
-    联系方式 VARCHAR(255)
+    联系方式 VARCHAR(255),
+		PRIMARY KEY (用户PID)
 );
+
+
 
 -- 区域表
 CREATE TABLE IF NOT EXISTS 区域表 (
