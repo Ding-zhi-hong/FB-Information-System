@@ -166,6 +166,95 @@ def add_restrant(id,name,place,areaid,money,time,labelid,businessid):
     connection.close()
 
 #菜品
+def get_dishs(restrantid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 菜品 WHERE 餐厅ID = %d"
+    cursor.execute(query, (restrantid,))
+    dishes = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return dishes
+
+def add_dish(dishid,name,price,describe,yes_or_no,restrantid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "INSERT INTO 菜品 (菜品ID, 名称,价格,描述,是否特色菜,餐厅id) VALUES (%d,%s,%s,%s,%s,%d)"
+    cursor.execute(query, (dishid,name,price,describe,yes_or_no,restrantid))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
+#订单记录
+def get_orders_with_userid(userid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 订单记录 WHERE 用户ID = %d"
+    cursor.execute(query, (userid,))
+    orders = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return orders
+
+def get_orders_with_restrantid(restrantid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 订单记录 WHERE 餐厅ID = %d"
+    cursor.execute(query, (restrantid,))
+    restrants = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return restrants
+
+def add_order(userid,restrantid,dishid,money,time):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "INSERT INTO 订单记录 (用户ID,餐厅ID,菜品ID,消费Money,下单时间) VALUES (%d,%d,%d,%s,%s)"
+    cursor.execute(query, (userid,restrantid,dishid,money,time))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+#评价
+def get_score_with_restrantid(restrantid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 评价 WHERE 餐厅ID = %d"
+    cursor.execute(query, (restrantid,))
+    scores = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return scores
+
+def get_score_with_userid(userid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 评价 WHERE 用户ID = %d"
+    cursor.execute(query, (userid,))
+    scores = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return scores
+
+def get_score_with_restrantid_userid(restrantid,userid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 评价 WHERE 餐厅ID = %d AND 用户ID = %d"
+    cursor.execute(query, (restrantid,userid,))
+    scores = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return scores
+
+def add_score(scoreid,userid,restrantid,score,content):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "INSERT INTO 评价 (评价ID,用户ID,餐厅ID,评分,评论内容) VALUES (%d,%d,%d,%s,%s)"
+    cursor.execute(query, (scoreid,userid,restrantid,score,content))
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 '''if __name__ == '__main__':
