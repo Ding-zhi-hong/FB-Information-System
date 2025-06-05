@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐饮系统登录</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <div class="banner-content">
+                <h1>美食速递 即刻享受</h1>
+                <p>精选优质餐厅，品质美食，快速配送<br>让您足不出户享受美味</p>
+            </div>
+        </div>
+
+        <div class="login-form">
+            <div class="logo">
+                <h2>美味在线</h2>
+                <p>欢迎登录餐饮管理系统</p>
+            </div>
+
+            {% if error %}
+            <div id="message" class="message error">
+                {{ error }}
+                <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>
+            </div>
+            {% endif %}
+
+            <form id="loginForm" method="POST" action="/login">
+                <input type="hidden" name="loginType" id="loginTypeInput" value="user">
+
+                <div class="login-tabs">
+                    <div class="login-tab active" data-type="user">
+                        <i class="fas fa-user"></i> 用户登录
+                    </div>
+                    <div class="login-tab" data-type="business">
+                        <i class="fas fa-store"></i> 商家登录
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="username" class="input-field" placeholder="请输入用户名" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" class="input-field" placeholder="请输入密码" required>
+                </div>
+
+                <div class="remember-row">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">记住我</label>
+                    </div>
+                    <a href="#" class="forgot-password">忘记密码?</a>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> 立即登录
+                </button>
+
+                <div class="login-type">
+                    当前登录类型: <span id="loginTypeText">用户</span>
+                </div>
+
+                <div class="signup-link">
+                    还没有账号？ <a href="/register">立即注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 处理登录选项卡切换
+        const loginTabs = document.querySelectorAll('.login-tab');
+        const loginTypeText = document.getElementById('loginTypeText');
+        const loginTypeInput = document.getElementById('loginTypeInput');
+
+        loginTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                loginTabs.forEach(t => t.classList.remove('active'));
+                // 为当前点击的选项卡添加active类
+                this.classList.add('active');
+
+                // 更新登录类型文本和隐藏输入值
+                const type = this.getAttribute('data-type');
+                loginTypeText.textContent = type === 'user' ? '用户' : '商家';
+                loginTypeInput.value = type;
+            });
+        });
+
+        // 表单提交前的验证
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', function() {
+            // 移除所有输入框的错误状态
+            const inputs = document.querySelectorAll('.input-field');
+            inputs.forEach(input => {
+                input.classList.remove('error');
+            });
+
+            let isValid = true;
+
+            // 用户名验证
+            const username = document.getElementById('username');
+            if (!username.value.trim()) {
+                username.classList.add('error');
+                isValid = false;
+            }
+
+            // 密码验证
+            const password = document.getElementById('password');
+            if (!password.value) {
+                password.classList.add('error');
+                isValid = false;
+            } else if (password.value.length < 6) {
+                password.classList.add('error');
+                isValid = false;
+                document.getElementById('message').innerHTML = "密码长度不能小于6个字符";
+                document.getElementById('message').style.display = 'block';
+            }
+
+            return isValid;
+        });
+    </script>
+</body>
+</html>
