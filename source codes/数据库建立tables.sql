@@ -80,12 +80,14 @@ CREATE TABLE IF NOT EXISTS 菜品 (
     是否特色菜 VARCHAR(255)
 );
 
+
 -- 商家表
 CREATE TABLE IF NOT EXISTS 商家 (
-    商家id INT PRIMARY KEY,
+    商家id INT NOT NULL AUTO_INCREMENT,
     联系电话 VARCHAR(255),
     商家名 VARCHAR(255),
-    密码 VARCHAR(255)
+    密码 VARCHAR(255),
+		PRIMARY KEY (商家id)
 );
 
 -- 添加外键关系 (图片中未明确但逻辑需要的关联)
