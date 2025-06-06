@@ -84,11 +84,11 @@ def add_label(labelid,label):
     connection.close()
 
 #商家信息
-def register_business(id,phone_number,username, password):
+def register_business(phone_number,username, password):
     connection = create_connection()
     cursor = connection.cursor()
-    query = "INSERT INTO 商家 (商家id, 联系电话,商家名,密码) VALUES (%d,%s, %s,%s)"
-    cursor.execute(query, (id,phone_number,username, password))
+    query = "INSERT INTO 商家 (联系电话,商家名,密码) VALUES (%s, %s,%s)"
+    cursor.execute(query, (phone_number,username, password))
     connection.commit()
     cursor.close()
     connection.close()

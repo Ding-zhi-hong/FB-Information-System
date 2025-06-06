@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册账户</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #4b6cb7, #182848);
+            color: white;
+            text-align: center;
+            padding: 35px 30px 25px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .logo {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00c853, #64dd17);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: rgba(240, 244, 248, 0.7);
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 18px 15px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .tab.active {
+            color: #4b6cb7;
+            background: white;
+            position: relative;
+        }
+
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: #4b6cb7;
+            border-radius: 3px;
+        }
+
+        .form-content {
+            padding: 35px 30px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f9fafb;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4b6cb7;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.15);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #4b6cb7, #182848);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #3a5aa0, #131f3d);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 15px;
+        }
+
+        .login-link a {
+            color: #4b6cb7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .login-link a:hover {
+            color: #182848;
+            text-decoration: underline;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .error-message {
+            background-color: #ffefef;
+            color: #e53e3e;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            animation: shake 0.5s;
+        }
+
+        .error-message i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            background-color: #edf7ed;
+            color: #4caf50;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+        }
+
+        .success-message i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 25px 20px 15px;
+            }
+
+            .form-content {
+                padding: 25px 20px 15px;
+            }
+
+            .tab {
+                font-size: 15px;
+                padding: 15px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h1>创建您的账户</h1>
+            <p>选择您的账户类型开始使用</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="user">用户注册</div>
+            <div class="tab" data-tab="merchant">商家注册</div>
+        </div>
+
+        <div class="register-form">
+            <!-- 消息显示区域 -->
+            <div id="message-area" style="display: none;">
+                <!-- 错误或成功消息会动态显示在这里 -->
+            </div>
+
+            <!-- 用户注册表单 -->
+            <div id="user-form" class="form-content active">
+                <form id="register-user" method="POST">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" required placeholder="设置您的用户名">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-password">密码</label>
+                        <div class="password-field">
+                            <input type="password" id="user-password" name="password" required placeholder="至少8位字符">
+                            <span class="password-toggle" onclick="togglePasswordVisibility('user-password')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="requirements">密码需包含8-20个字符，至少有一个字母和一个数字</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-phone">联系电话</label>
+                        <input type="tel" id="user-phone" name="phone" required placeholder="请输入您的手机号码" pattern="[0-9]{11}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">注册用户账户</button>
+                </form>
+            </div>
+
+            <!-- 商家注册表单 -->
+            <div id="merchant-form" class="form-content">
+                <form id="register-merchant" method="POST">
+                    <div class="form-group">
+                        <label for="merchant-name">商家名称</label>
+                        <input type="text" id="merchant-name" name="merchant_name" required placeholder="输入您的店铺名称">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="merchant-password">密码</label>
+                        <div class="password-field">
+                            <input type="password" id="merchant-password" name="password" required placeholder="至少8位字符">
+                            <span class="password-toggle" onclick="togglePasswordVisibility('merchant-password')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="requirements">密码需包含8-20个字符，至少有一个字母和一个数字</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="merchant-phone">联系电话</label>
+                        <input type="tel" id="merchant-phone" name="phone" required placeholder="请输入您的手机号码" pattern="[0-9]{11}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">注册商家账户</button>
+                </form>
+            </div>
+
+            <div class="login-link">
+                已有账户？<a href="/login">立即登录</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签切换功能
+        const tabs = document.querySelectorAll('.tab');
+        const formContents = document.querySelectorAll('.form-content');
+        const messageArea = document.getElementById('message-area');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有激活状态
+                tabs.forEach(t => t.classList.remove('active'));
+                formContents.forEach(f => f.classList.remove('active'));
+
+                // 添加当前激活状态
+                tab.classList.add('active');
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(`${tabName}-form`).classList.add('active');
+            });
+        });
+
+        // 密码可见性切换
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+
+            // 改变图标
+            const icon = passwordField.nextElementSibling.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        }
+
+        // 显示消息函数
+        function showMessage(message, isSuccess) {
+            messageArea.style.display = 'block';
+            const messageType = isSuccess ? 'success' : 'error';
+
+            messageArea.innerHTML = `
+                <div class="${messageType}-message">
+                    <i class="fas fa-${isSuccess ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            // 自动隐藏消息
+            if (isSuccess) {
+                setTimeout(() => {
+                    messageArea.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // 表单提交处理
+        document.getElementById('register-user').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // 获取表单数据
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('user-password').value;
+            const phone = document.getElementById('user-phone').value;
+
+            // 简单验证
+            if (!username || !password || !phone) {
+                showMessage('请填写所有必填字段', false);
+                return;
+            }
+
+            if (!validatePhone(phone)) {
+                showMessage('请输入有效的11位手机号码', false);
+                return;
+            }
+
+            if (!validatePassword(password)) {
+                showMessage('密码需包含8-20个字符，至少有一个字母和一个数字', false);
+                return;
+            }
+
+            // 提交表单数据
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // 注册成功
+                    showMessage('用户注册成功！正在跳转到登录页面...', true);
+
+                    // 清除表单
+                    this.reset();
+
+                    // 3秒后重定向到登录页
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 3000);
+                } else {
+                    // 服务器返回错误
+                    const error = await response.text();
+                    showMessage(error || '注册失败，请重试', false);
+                }
+            } catch (error) {
+                console.error('注册请求错误:', error);
+                showMessage('网络错误，请检查您的连接', false);
+            }
+        });
+
+        // 商家表单提交处理
+        document.getElementById('register-merchant').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // 获取表单数据
+            const merchantName = document.getElementById('merchant-name').value;
+            const password = document.getElementById('merchant-password').value;
+            const phone = document.getElementById('merchant-phone').value;
+
+            // 简单验证
+            if (!merchantName || !password || !phone) {
+                showMessage('请填写所有必填字段', false);
+                return;
+            }
+
+            if (!validatePhone(phone)) {
+                showMessage('请输入有效的11位手机号码', false);
+                return;
+            }
+
+            if (!validatePassword(password)) {
+                showMessage('密码需包含8-20个字符，至少有一个字母和一个数字', false);
+                return;
+            }
+
+            // 提交表单数据
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // 注册成功
+                    showMessage('商家注册成功！正在跳转到登录页面...', true);
+
+                    // 清除表单
+                    this.reset();
+
+                    // 3秒后重定向到登录页
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 3000);
+                } else {
+                    // 服务器返回错误
+                    const error = await response.text();
+                    showMessage(error || '注册失败，请重试', false);
+                }
+            } catch (error) {
+                console.error('注册请求错误:', error);
+                showMessage('网络错误，请检查您的连接', false);
+            }
+        });
+
+        // 验证手机号码格式
+        function validatePhone(phone) {
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // 验证密码复杂度
+        function validatePassword(password) {
+            // 8-20个字符，至少一个字母和一个数字
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+            return passwordRegex.test(password);
+        }
+
+        // 从URL获取错误消息（如果有）
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('error')) {
+                const msg = decodeURIComponent(urlParams.get('error'));
+                if (msg) {
+                    showMessage(msg, false);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
