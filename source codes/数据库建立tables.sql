@@ -2,13 +2,14 @@
 CREATE DATABASE IF NOT EXISTS FB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE FB;
-
+#DROP DATABASE FB;
 -- 员工表
 CREATE TABLE IF NOT EXISTS 员工 (
     pno VARCHAR(255),
     姓名 VARCHAR(255),
     职位 VARCHAR(255),
-    联系方式 VARCHAR(255)
+    联系方式 VARCHAR(255),
+		PRIMARY KEY (pno)
 );
 
 -- 评价表
@@ -32,32 +33,51 @@ CREATE TABLE IF NOT EXISTS 用户 (
 		PRIMARY KEY (用户PID)
 );
 
+INSERT INTO 用户(用户名,联系方式,密码)
+VALUES('丁志宏','15922465921','dzh1234');
 
 
 -- 区域表
 CREATE TABLE IF NOT EXISTS 区域表 (
-    区域ID INT PRIMARY KEY,
+    区域ID INT NOT NULL AUTO_INCREMENT,
     区域名称 VARCHAR(255),
     上级区域ID INT,
-    是否热门区域 VARCHAR(255)
+    是否热门区域 VARCHAR(255),
+		PRIMARY KEY (区域ID)
+		
 );
-
+INSERT INTO 区域表(区域名称,上级区域ID,是否热门区域)
+VALUES('中科大',1,'是');
 -- 餐厅表
 CREATE TABLE IF NOT EXISTS 餐厅 (
-    餐厅ID INT PRIMARY KEY,
+    餐厅ID INT NOT NULL AUTO_INCREMENT,
     名称 VARCHAR(255),
     地址 VARCHAR(255),
     区域ID INT,
     人均消费 VARCHAR(255),
     营业时间 VARCHAR(255),
     类别id INT,
-    FOREIGN KEY (区域ID) REFERENCES 区域表(区域ID)
+    FOREIGN KEY (区域ID) REFERENCES 区域表(区域ID),
+		PRIMARY KEY (餐厅ID)
 );
+
+INSERT INTO 餐厅(名称,地址,区域ID,人均消费,营业时间,类别id)
+VALUES('美食广场','东区活动中心',1,'200','8:00-19:00',1);
+
+CREATE TABLE IF NOT EXISTS 类别 (
+    类别id INT NOT NULL AUTO_INCREMENT,
+    类别名 VARCHAR(255),
+		PRIMARY KEY (类别id)
+);
+
+INSERT INTO 类别(类别名)
+VALUES ('早餐店');
 
 -- 特色标签表
 CREATE TABLE IF NOT EXISTS 特色标签 (
-    标签ID INT PRIMARY KEY,
-    标签名 VARCHAR(255)
+    标签ID INT NOT NULL AUTO_INCREMENT,
+    标签名 VARCHAR(255),
+		PRIMARY KEY (标签ID)
 );
 
 -- 订单记录表
@@ -73,11 +93,12 @@ CREATE TABLE IF NOT EXISTS 订单记录 (
 
 -- 菜品表
 CREATE TABLE IF NOT EXISTS 菜品 (
-    菜品ID INT PRIMARY KEY,
+    菜品ID INT NOT NULL AUTO_INCREMENT,
     名称 VARCHAR(255),
     价格 VARCHAR(255),
     描述 VARCHAR(255),
-    是否特色菜 VARCHAR(255)
+    是否特色菜 VARCHAR(255),
+		PRIMARY KEY (菜品ID)
 );
 
 
@@ -90,6 +111,9 @@ CREATE TABLE IF NOT EXISTS 商家 (
 		PRIMARY KEY (商家id)
 );
 
+INSERT INTO 商家(联系电话,商家名,密码)
+VALUES('15922465921','USTC','USTC1234');
+
 -- 添加外键关系 (图片中未明确但逻辑需要的关联)
 ALTER TABLE 评价
 ADD FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
@@ -98,6 +122,10 @@ ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
 ALTER TABLE 餐厅
 ADD COLUMN 商家id INT,
 ADD FOREIGN KEY (商家id) REFERENCES 商家(商家id);
+
+UPDATE 餐厅
+SET 商家id=1
+WHERE 餐厅ID=1;
 
 ALTER TABLE 菜品
 ADD COLUMN 餐厅ID INT,
