@@ -9,16 +9,19 @@ CREATE TABLE IF NOT EXISTS 员工 (
     姓名 VARCHAR(255),
     职位 VARCHAR(255),
     联系方式 VARCHAR(255),
+		餐厅ID INT ,
 		PRIMARY KEY (pno)
 );
 
 -- 评价表
 CREATE TABLE IF NOT EXISTS 评价 (
-    评价ID INT,
+    评价ID INT NOT NULL AUTO_INCREMENT,
     用户ID INT,
     餐厅ID INT,
+		菜品ID INT,
     评分 VARCHAR(255),
-    评论内容 VARCHAR(255)
+    评论内容 VARCHAR(255),
+		PRIMARY KEY (评价ID)
 );
 
 
@@ -33,8 +36,7 @@ CREATE TABLE IF NOT EXISTS 用户 (
 		PRIMARY KEY (用户PID)
 );
 
-INSERT INTO 用户(用户名,联系方式,密码)
-VALUES('丁志宏','15922465921','dzh1234');
+
 
 
 -- 区域表
@@ -46,8 +48,7 @@ CREATE TABLE IF NOT EXISTS 区域表 (
 		PRIMARY KEY (区域ID)
 		
 );
-INSERT INTO 区域表(区域名称,上级区域ID,是否热门区域)
-VALUES('中科大',1,'是');
+
 -- 餐厅表
 CREATE TABLE IF NOT EXISTS 餐厅 (
     餐厅ID INT NOT NULL AUTO_INCREMENT,
@@ -61,8 +62,7 @@ CREATE TABLE IF NOT EXISTS 餐厅 (
 		PRIMARY KEY (餐厅ID)
 );
 
-INSERT INTO 餐厅(名称,地址,区域ID,人均消费,营业时间,类别id)
-VALUES('美食广场','东区活动中心',1,'200','8:00-19:00',1);
+
 
 CREATE TABLE IF NOT EXISTS 类别 (
     类别id INT NOT NULL AUTO_INCREMENT,
@@ -70,8 +70,6 @@ CREATE TABLE IF NOT EXISTS 类别 (
 		PRIMARY KEY (类别id)
 );
 
-INSERT INTO 类别(类别名)
-VALUES ('早餐店');
 
 -- 特色标签表
 CREATE TABLE IF NOT EXISTS 特色标签 (
@@ -82,14 +80,18 @@ CREATE TABLE IF NOT EXISTS 特色标签 (
 
 -- 订单记录表
 CREATE TABLE IF NOT EXISTS 订单记录 (
+    订单ID INT NOT NULL AUTO_INCREMENT,
     用户ID INT,
     餐厅ID INT,
     菜品ID INT,
     消费Money VARCHAR(255),
     下单时间 VARCHAR(255),
     FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
-    FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID)
+    FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID),
+		PRIMARY KEY (订单ID)
 );
+
+
 
 -- 菜品表
 CREATE TABLE IF NOT EXISTS 菜品 (
@@ -101,7 +103,6 @@ CREATE TABLE IF NOT EXISTS 菜品 (
 		PRIMARY KEY (菜品ID)
 );
 
-
 -- 商家表
 CREATE TABLE IF NOT EXISTS 商家 (
     商家id INT NOT NULL AUTO_INCREMENT,
@@ -111,8 +112,7 @@ CREATE TABLE IF NOT EXISTS 商家 (
 		PRIMARY KEY (商家id)
 );
 
-INSERT INTO 商家(联系电话,商家名,密码)
-VALUES('15922465921','USTC','USTC1234');
+
 
 -- 添加外键关系 (图片中未明确但逻辑需要的关联)
 ALTER TABLE 评价
@@ -123,10 +123,13 @@ ALTER TABLE 餐厅
 ADD COLUMN 商家id INT,
 ADD FOREIGN KEY (商家id) REFERENCES 商家(商家id);
 
-UPDATE 餐厅
-SET 商家id=1
-WHERE 餐厅ID=1;
 
 ALTER TABLE 菜品
 ADD COLUMN 餐厅ID INT,
 ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
+
+ALTER TABLE 评价
+ADD COLUMN 订单ID INT;
+
+ALTER TABLE `员工`
+CHANGE COLUMN 餐厅ID 商家ID INT;
