@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐厅菜单 - 美食天地</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --secondary-color: #d35400;
+            --light-bg: #f9f7f3;
+            --card-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            --border-radius: 12px;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            padding-top: 0;
+        }
+
+        .header-bg {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            padding: 35px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .restaurant-header {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dish-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .dish-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1470');
+        }
+
+        .dish-info {
+            padding: 20px;
+        }
+
+        .dish-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dish-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .dish-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .featured-tag {
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .empty-dishes {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin: 50px 0;
+        }
+
+        .divider {
+            border-bottom: 1px solid #eee;
+            margin: 30px 0;
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dish-name {
+                flex-direction: column;
+            }
+
+            .dish-price {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <div class="back-btn">
+        <a href="/restrants" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>返回餐厅列表
+        </a>
+    </div>
+
+    <!-- 头部区域 -->
+    <div class="header-bg">
+        <div class="container">
+            <h1 class="text-white text-center mb-4">餐厅菜单</h1>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- 餐厅头部信息 -->
+        <div class="restaurant-header">
+            <h2 class="restaurant-name">当前餐厅菜单</h2>
+        </div>
+
+        <!-- 菜品列表 -->
+        <div id="dishes-container">
+            {% if dishes %}
+                {% set grouped_dishes = {} %}
+                {% for dish in dishes %}
+                    {# 假设每道菜有一个category属性，如果没有就用一个默认值 #}
+                    {% set category = "特色菜" if dish[4] else "常规菜品" %}
+                    {% if category not in grouped_dishes %}
+                        {% set _ = grouped_dishes.update({category: []}) %}
+                    {% endif %}
+                    {% set _ = grouped_dishes[category].append(dish) %}
+                {% endfor %}
+
+                {% for category, category_dishes in grouped_dishes.items() %}
+                <div class="category-section">
+                    <h3 class="category-title">{{ category }}</h3>
+                    <div class="row">
+                        {% for dish in category_dishes %}
+                        {% set dish_id = dish[0] %}
+                        {% set dish_name = dish[1] %}
+                        {% set dish_price = dish[2] %}
+                        {% set dish_desc = dish[3] %}
+                        {% set is_featured = dish[4] %}
+                        {% set restaurant_id = dish[5] %}
+
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="dish-card">
+                                <div class="dish-image"></div>
+                                <div class="dish-info">
+                                    {% if is_featured %}
+                                    <div class="featured-tag">
+                                        <i class="fas fa-star me-2"></i>特色推荐
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="dish-name">
+                                        <span>{{ dish_name }}</span>
+                                        <span class="dish-price">¥{{ dish_price }}</span>
+                                    </div>
+
+                                    <p class="dish-description">
+                                        {% if dish_desc %}
+                                            {{ dish_desc }}
+                                        {% else %}
+                                            暂无描述
+                                        {% endif %}
+                                    </p>
+
+                                    <div class="dish-meta">
+                                        <small class="text-muted">菜品ID: {{ dish_id }}</small>
+                                    </div>
+
+                                    <button class="add-to-cart mt-3">
+                                        <i class="fas fa-plus me-2"></i>加入购物车
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if not loop.last %}
+                    <div class="divider"></div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-dishes">
+                    <i class="fas fa-utensils fa-4x mb-4" style="color: #ddd;"></i>
+                    <h3 class="mb-3">暂无菜品信息</h3>
+                    <p class="text-muted">抱歉，该餐厅还没有添加菜品</p>
+                    <a href="/restrants" class="btn btn-primary mt-3">
+                        <i class="fas fa-utensils me-2"></i>返回餐厅列表
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

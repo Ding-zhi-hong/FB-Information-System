@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单评价</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .evaluate-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 100, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .evaluate-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(to right, #4a6de5, #6d8eff);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .order-info {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+            background: #f9faff;
+        }
+
+        .order-row {
+            display: flex;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .order-item {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 15px;
+        }
+
+        .order-item h4 {
+            font-size: 14px;
+            color: #7d859c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .order-item p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .evaluation-form {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group h3 {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group h3 i {
+            margin-right: 10px;
+            color: #4a6de5;
+        }
+
+        .rating {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 36px;
+            color: #ddd;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: all 0.2s ease;
+        }
+
+        .rating label:hover,
+        .rating input:checked ~ label,
+        .rating label:hover ~ label {
+            color: #ffd700;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4a6de5;
+            box-shadow: 0 0 0 3px rgba(74, 109, 229, 0.2);
+        }
+
+        .word-count {
+            text-align: right;
+            font-size: 14px;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #4a6de5, #6d8eff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(74, 109, 229, 0.3);
+        }
+
+        .evaluate-hint {
+            text-align: center;
+            margin: 25px 0;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .evaluate-hint i {
+            color: #4a6de5;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .order-row {
+                flex-direction: column;
+            }
+
+            .order-item {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .rating label {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .order-info, .evaluation-form {
+                padding: 20px;
+            }
+
+            .rating label {
+                font-size: 24px;
+            }
+
+            .btn-submit {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="evaluate-card">
+            <div class="header">
+                <h1><i class="fas fa-star"></i> 订单评价</h1>
+                <p>请分享您对本订单的体验和感受</p>
+            </div>
+
+            <div class="order-info">
+                <div class="order-row">
+                    <div class="order-item">
+                        <h4>订单id</h4>
+                        <p>{{ evaluate[0] }}</p>
+                    </div>
+                    <div class="order-item">
+                        <h4>餐厅id</h4>
+                        <p>{{ evaluate[2]}}</p>
+                    </div>
+                </div>
+                <div class="order-row">
+                    <div class="order-item">
+                        <h4>菜品</h4>
+                        <p>{{evaluate[3]}}</p>
+                    </div>
+                    <div class="order-item">
+                        <h4>用户</h4>
+                        <p>{{evaluate[1]}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="evaluation-form">
+                <form action="/evaluate" method="POST">
+                    <input type="hidden" name="order_id" value="{{ order_id }}">
+
+                    <div class="form-group">
+                        <h3><i class="fas fa-star-half-alt"></i> 服务评分</h3>
+                        <div class="rating" id="ratingStars">
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                            <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                            <input type="radio" id="star3" name="rating" value="3" checked><label for="star3">★</label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h3><i class="far fa-comment-alt"></i> 评价内容</h3>
+                        <textarea name="comment" id="comment" placeholder="请分享您的购买体验、产品使用感受和服务体验..."></textarea>
+                        <div class="word-count" id="wordCount">0/500</div>
+                    </div>
+
+                    <div class="evaluate-hint">
+                        <p><i class="fas fa-info-circle"></i> 温馨提示：您的评价将有助于我们改进服务和产品质量</p>
+                    </div>
+
+                    <button type="submit" class="btn-submit">提交评价</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textarea = document.getElementById('comment');
+            const wordCount = document.getElementById('wordCount');
+
+            // 字符计数功能
+            textarea.addEventListener('input', function() {
+                const charCount = this.value.length;
+                wordCount.textContent = `${charCount}/500`;
+
+                if (charCount > 500) {
+                    this.value = this.value.substring(0, 500);
+                    wordCount.textContent = "500/500 (字数已超限制)";
+                    wordCount.style.color = '#e53e3e';
+                } else if (charCount > 400) {
+                    wordCount.style.color = '#e53e3e';
+                } else {
+                    wordCount.style.color = '#a0aec0';
+                }
+            });
+
+            // 评分星星交互增强
+            const stars = document.querySelectorAll('.rating label');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    stars.forEach(s => s.style.textShadow = 'none');
+
+                    // 添加高亮效果
+                    this.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.6)';
+
+                    // 高亮所有前面的星星
+                    let prev = this.previousElementSibling;
+                    while (prev) {
+                        if (prev.nodeName === 'LABEL') {
+                            prev.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.6)';
+                        }
+                        prev = prev.previousElementSibling;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

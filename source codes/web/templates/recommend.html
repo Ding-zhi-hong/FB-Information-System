@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美味餐厅推荐系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #9b59b6;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--secondary);
+            font-weight: 700;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .section-title:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .section-link {
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .section-link:hover {
+            color: var(--secondary);
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.12);
+        }
+
+        .card-img-top {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .restaurant-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .restaurant-card .card-body {
+            padding: 20px;
+        }
+
+        .restaurant-card .card-title {
+            font-size: 20px;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-card .card-text {
+            color: #7b8a8b;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-card .card-text i {
+            color: var(--primary);
+            margin-right: 8px;
+            width: 18px;
+        }
+
+        .restaurant-card .card-footer {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .price {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--danger);
+        }
+
+        .btn-reserve {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reserve:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(241, 196, 15, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #f39c12;
+            font-weight: 600;
+        }
+
+        .rating i {
+            color: #f1c40f;
+        }
+
+        .highlight-section {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .highlight-banner {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 30px;
+        }
+
+        .highlight-banner h2 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .banner-icon {
+            font-size: 40px;
+            margin-right: 15px;
+        }
+
+        .tabs-container {
+            background: white;
+            padding: 0;
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+            padding: 0 30px;
+        }
+
+        .nav-tabs .nav-item .nav-link {
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--secondary);
+            font-weight: 600;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-item .nav-link.active {
+            background: transparent;
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .nav-tabs .nav-item .nav-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-pane {
+            padding: 30px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .restaurant-card .card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg sticky-nav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-utensils me-2 text-primary fs-3"></i>
+                <span class="fw-bold" style="font-size: 24px;">美味餐厅推荐</span>
+            </a>
+
+            <div class="d-flex align-items-center">
+                <button class="btn btn-outline-primary position-relative me-3">
+                    <i class="fas fa-history"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ history_restrant|length }}
+                    </span>
+                </button>
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="用户头像" class="rounded-circle" style="width: 40px; height: 40px;">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <!-- 热门推荐区域 -->
+        <section class="mb-5">
+            <div class="section-header">
+                <h3 class="section-title">热门推荐</h3>
+                <a href="#" class="section-link">
+                    <span>查看全部</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+
+            <div class="card-grid">
+                {% for restaurant in hotrestrants %}
+                <div class="restaurant-card">
+                    <img src="https://source.unsplash.com/random/600x400/?restaurant,{{ restaurant[0] }}" class="card-img-top" alt="{{ restaurant[1] }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ restaurant[1] }}</h5>
+                        <p class="card-text"><i class="fas fa-map-marker-alt"></i> {{ restaurant[2] }}</p>
+                        <p class="card-text"><i class="fas fa-compass"></i> {{ restaurant[3] }}</p>
+                        <p class="card-text"><i class="far fa-clock"></i> {{ restaurant[5] }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="price">¥{{ restaurant[4] }}/人</div>
+                        <button class="btn-reserve">立即订座</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- 评分、菜品和历史推荐 -->
+        <div class="highlight-section">
+            <div class="highlight-banner d-flex align-items-center">
+                <div class="banner-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <h2>个性化推荐</h2>
+                    <p class="mb-0">根据您的偏好和需求定制</p>
+                </div>
+            </div>
+
+            <div class="tabs-container">
+                <ul class="nav nav-tabs" id="recommendTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="score-tab" data-bs-toggle="tab" data-bs-target="#score" type="button" role="tab">评分推荐</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="cuisine-tab" data-bs-toggle="tab" data-bs-target="#cuisine" type="button" role="tab">菜品推荐</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">历史推荐</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="recommendTabsContent">
+                    <!-- 评分推荐 -->
+                    <div class="tab-pane fade show active" id="score" role="tabpanel">
+                        <div class="card-grid">
+                            {% for restaurant in highscore_restrants %}
+                            <div class="restaurant-card">
+                                <img src="https://source.unsplash.com/random/600x400/?restaurant,rating,{{ restaurant[0] }}" class="card-img-top" alt="{{ restaurant[1] }}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="card-title mb-0">{{ restaurant[1] }}</h5>
+                                        <div class="rating">
+                                            <i class="fas fa-star"></i> {{ restaurant[7] }}
+                                        </div>
+                                    </div>
+                                    <p class="card-text"><i class="fas fa-map-marker-alt"></i> {{ restaurant[2] }}</p>
+                                    <p class="card-text"><i class="fas fa-compass"></i> {{ restaurant[3] }}</p>
+                                    <p class="card-text"><i class="far fa-clock"></i> {{ restaurant[5] }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="price">¥{{ restaurant[4] }}/人</div>
+                                    <button class="btn-reserve">立即订座</button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- 菜品推荐 -->
+                    <div class="tab-pane fade" id="cuisine" role="tabpanel">
+                        <div class="card-grid">
+                            {% for restaurant in cuisine_restrant %}
+                            <div class="restaurant-card">
+                                <img src="https://source.unsplash.com/random/600x400/?food,{{ restaurant[0] }}" class="card-img-top" alt="{{ restaurant[1] }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ restaurant[1] }}</h5>
+                                    <p class="card-text"><i class="fas fa-map-marker-alt"></i> {{ restaurant[2] }}</p>
+                                    <p class="card-text"><i class="fas fa-compass"></i> {{ restaurant[3] }}</p>
+                                    <p class="card-text"><i class="fas fa-tag"></i> {{ restaurant[6] }}</p>
+                                    <p class="card-text"><i class="far fa-clock"></i> {{ restaurant[5] }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="price">¥{{ restaurant[4] }}/人</div>
+                                    <button class="btn-reserve">查看菜品</button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- 历史推荐 -->
+                    <div class="tab-pane fade" id="history" role="tabpanel">
+                        <div class="card-grid">
+                            {% for restaurant in history_restrant %}
+                            <div class="restaurant-card">
+                                <img src="https://source.unsplash.com/random/600x400/?dining,{{ restaurant[0] }}" class="card-img-top" alt="{{ restaurant[1] }}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="card-title mb-0">{{ restaurant[1] }}</h5>
+                                        <div class="text-warning">
+                                            <i class="fas fa-history"></i> 经常下单
+                                        </div>
+                                    </div>
+                                    <p class="card-text"><i class="fas fa-map-marker-alt"></i> {{ restaurant[2] }}</p>
+                                    <p class="card-text"><i class="fas fa-compass"></i> {{ restaurant[3] }}</p>
+                                    <p class="card-text"><i class="far fa-clock"></i> {{ restaurant[5] }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="price">¥{{ restaurant[4] }}/人</div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-outline-primary">
+                                            <i class="fas fa-redo"></i> 再次访问
+                                        </button>
+                                        <button class="btn btn-outline-danger">
+                                            <i class="fas fa-times"></i> 移除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h3 class="mb-3"><i class="fas fa-utensils me-2 text-warning"></i>美味餐厅推荐</h3>
+                    <p>为您提供最佳的餐饮选择，根据您的偏好和需求推荐最合适的餐厅。</p>
+                    <div class="d-flex gap-3 fs-5">
+                        <a href="#" class="text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-weibo"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="mb-3">快速链接</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i>热门餐厅</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i>评分推荐</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i>菜品推荐</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i>历史记录</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i>关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="mb-3">联系我们</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 中科大东区活动中心</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> (0551) 1234-5678</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> contact@restaurant.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-4 pt-4 border-top border-secondary">
+                <p>© 2023 美味餐厅推荐系统 - 中科大项目 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

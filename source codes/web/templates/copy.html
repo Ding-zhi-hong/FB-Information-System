@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美味在线 - 线上餐厅服务平台</title>
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --light: #F7FFF7;
+            --dark: #1A535C;
+            --accent: #FFD166;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* 顶部导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        /* 搜索区域 */
+        .search-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 40px 0;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .search-container h1 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+            height: 60px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-btn:hover {
+            background: #ff5252;
+        }
+
+        /* 主要内容区域 */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 30px 0 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        /* 热门推荐 */
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .restaurant-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .restaurant-info {
+            padding: 20px;
+        }
+
+        .restaurant-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-cuisine {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-rating {
+            display: flex;
+            align-items: center;
+            color: #ffc107;
+            font-weight: 500;
+        }
+
+        .restaurant-rating span {
+            color: #6c757d;
+            margin-left: 5px;
+            font-weight: normal;
+        }
+
+        .price-delivery {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .price-delivery div {
+            background: #f0f8ff;
+            padding: 3px 8px;
+            border-radius: 15px;
+        }
+
+        /* 订单部分 */
+        .orders {
+            margin-top: 40px;
+        }
+
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .order-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .order-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .order-details h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .order-details p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-preparing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-delivering {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-delivered {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* 类别部分 */
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .category-card {
+            width: 180px;
+            height: 200px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            font-size: 36px;
+            color: var(--primary);
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* 底部 */
+        footer {
+            background: #1A535C;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #999;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                margin: 15px 0;
+            }
+
+            .search-container h1 {
+                font-size: 28px;
+            }
+
+            .categories {
+                justify-content: center;
+            }
+
+            .category-card {
+                width: 150px;
+                height: 170px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links li {
+                margin: 5px 10px;
+            }
+
+            .search-box {
+                height: 50px;
+            }
+
+            .restaurant-card {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .category-card {
+                width: 130px;
+                height: 150px;
+            }
+
+            .category-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjZCNkIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMyAyaDJjMiAwIDMgMSA0IDJsNC40IDRhMSAxIDAgMCAxIC4xLjFjMS4xIDEuMSAxLjkgMi4zIDIuMyAzLjQtLjcgMC0xLjYuMS0yLjQuNC0uNS41LTEuMSAxLjEtMS4xIDIuMi4zIDIuOSAyLjIgMy40IDMuOCAyLjggMi42LS42IDUuOS00LjUgNS45LTcuOCAwLTMuMSAyLjQtNi4zIDUuOS02LjhhNyA3IDAgMCAwIDIuNCA0LjFjLjEtLjkuMi0xLjUuOC0yLjIgLjctLjkgMS43LTEuNCAzLTEuNWgyIi8+PHBhdGggZD0iTTMgMTJoM2g5di03SDYiYy0xIDEuNS0yLjMgMy4yLTMgNC4yIi8+PHBhdGggZD0iTTMgMTd2M2gzdjNINiIvPjwvc3ZnPg==" alt="餐厅图标">
+                美味在线
+            </div>
+            <ul class="nav-links">
+                <li><a href="/userboard">首页</a></li>
+                <li><a href="#">热门推荐</a></li>
+                <li><a href="/myorders">我的订单</a></li>
+                <li><a href="/restrants">餐厅搜索</a></li>
+                <li><a href="/usercenter">用户中心</a></li>
+            </ul>
+            <div class="user-info">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTUzNUMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg==" alt="用户头像">
+                <span>欢迎，{{ session['username'] }}</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索区域 -->
+    <section class="search-section">
+        <div class="search-container">
+            <h1>探索美味的餐厅和美食</h1>
+            <div class="search-box">
+                <input type="text" placeholder="搜索餐厅、菜系或美食...">
+                <button class="search-btn">搜索</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要内容区 -->
+    <div class="container">
+        <!-- 热门推荐部分 -->
+        <h2 class="section-title">热门推荐</h2>
+        <div class="recommendations">
+            <!-- 餐厅卡片 1 -->
+            <div class="restaurant-card">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMjAwIDE4MCIgZmlsbD0iI0Y1RjVGNSI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE2MCIgcng9IjUiIHN0cm9rZT0iI2VlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjQ1IiB5PSI0NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzU1NSI+58iK6aOY5ra1T0tZ6KaoPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSI3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjODg4Ij7kuJPpq5jkuI7mrKfmt7vliqDlhaUg5L6L6b2QPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhjYzQ1MCI+5LiN5YWs5byPPC90ZXh0Pjwvc3ZnPg==" alt="金牌餐厅" class="restaurant-img">
+                <div class="restaurant-info">
+                    <div class="restaurant-title">金牌餐厅</div>
+                    <div class="restaurant-cuisine">中式料理 · 川菜 · 粤菜</div>
+                    <div class="restaurant-rating">
+                        ★★★★★ <span>(2,368条评价)</span>
+                    </div>
+                    <div class="price-delivery">
+                        <div>¥30起送</div>
+                        <div>配送费 ¥5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 餐厅卡片 2 -->
+            <div class="restaurant-card">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMjAwIDE4MCIgZmlsbD0iI0Y1RjVGNSI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE2MCIgcng9IjUiIHN0cm9rZT0iI2VlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjU1IiB5PSI0NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzU1NSI+5YWr5aWX5paH5a6JPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSI3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjODg4Ij7oiIfovr7ku6PlmYbnlLfnvZEg5pS+5bel5L2T5LyaPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhjYzQ1MCI+54S25Yiw5LqGPC90ZXh0Pjwvc3ZnPg==" alt="海洋寿司" class="restaurant-img">
+                <div class="restaurant-info">
+                    <div class="restaurant-title">海洋寿司</div>
+                    <div class="restaurant-cuisine">日本料理 · 寿司 · 刺身</div>
+                    <div class="restaurant-rating">
+                        ★★★★☆ <span>(1,892条评价)</span>
+                    </div>
+                    <div class="price-delivery">
+                        <div>¥50起送</div>
+                        <div>配送费 ¥8</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 餐厅卡片 3 -->
+            <div class="restaurant-card">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMTgwIiB2aWV3Qm94PSIwIDAgMjAwIDE4MCIgZmlsbD0iI0Y1RjVGNSI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE2MCIgcng9IjUiIHN0cm9rZT0iI2VlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2YwZjBmMCIvPjx0ZXh0IHg9IjYwIiB5PSI0NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzU1NSI+5rW36Iu55pifPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSI3NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjODg4Ij7mrKfmt7vnuqfnvZEg5YWs5a6k5L2T5LyaPC90ZXh0Pjx0ZXh0IHg9IjIyIiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhjYzQ1MCI+54S25Yiw5LqGPC90ZXh0Pjwvc3ZnPg==" alt="意式花园" class="restaurant-img">
+                <div class="restaurant-info">
+                    <div class="restaurant-title">意式花园</div>
+                    <div class="restaurant-cuisine">西餐 · 意大利面 · 披萨</div>
+                    <div class="restaurant-rating">
+                        ★★★★☆ <span>(1,547条评价)</span>
+                    </div>
+                    <div class="price-delivery">
+                        <div>¥40起送</div>
+                        <div>配送费 ¥6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单部分 -->
+        <div class="orders">
+            <h2 class="section-title">我的订单</h2>
+            <div class="order-list">
+                <!-- 订单 1 -->
+                <div class="order-card">
+                    <div class="order-info">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiBmaWxsPSIjRjVGNUY1Ij48cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2Y1ZjVmNSIgcng9IjMiLz48cGF0aCBkPSJNMTUgMTVoMTB2MTBIMTV6bTEwIDEwaDEwdjEwSDI1em0xMCAxMGgxMHYxMEgzNXoiIGZpbGw9IiNlZWVlZWUiLz48L3N2Zz4=" alt="寿司拼盘" class="order-img">
+                        <div class="order-details">
+                            <h4>海洋寿司</h4>
+                            <p>寿司拼盘×1，刺身船×1，手卷×2</p>
+                        </div>
+                    </div>
+                    <div class="order-status status-preparing">准备中</div>
+                </div>
+
+                <!-- 订单 2 -->
+                <div class="order-card">
+                    <div class="order-info">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiBmaWxsPSIjRjVGNUY1Ij48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyMCIgZmlsbD0iI2Y1ZjVmNSIgc3Ryb2tlPSIjZWVlIiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMjUgMjVoMTAuMDFMMzUgMzVoNS4wMWwtNS4wMSA1LjAxIDIuMDEgMi4wMUw0NSAzNS43bC0uMDEtLjAyLjAxLjAyIDkuOTctOS45N0w0MCAxNXoiIGZpbGw9IiNlZWVlZWUiLz48L3N2Zz4=" alt="意大利面" class="order-img">
+                        <div class="order-details">
+                            <h4>意式花园</h4>
+                            <p>海鲜意面×1，提拉米苏×1，沙拉×1</p>
+                        </div>
+                    </div>
+                    <div class="order-status status-delivering">配送中</div>
+                </div>
+
+                <!-- 订单 3 -->
+                <div class="order-card">
+                    <div class="order-info">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIiBmaWxsPSIjRjVGNUY1Ij48cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgZmlsbD0iI2Y1ZjVmNSIgcng9IjMiLz48Y2lyY2xlIGN4PSIyNSIgY3k9IjI1IiByPSI0IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iMzUiIGN5PSIyNSIgcj0iNCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjIwIiB5PSI0MCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIHJ4PSIyIi8+PC9zdmc+" alt="热干面" class="order-img">
+                        <div class="order-details">
+                            <h4>金牌餐厅</h4>
+                            <p>担担面×1，宫保鸡丁×1，红油抄手×1</p>
+                        </div>
+                    </div>
+                    <div class="order-status status-delivered">已完成</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 类别部分 -->
+        <h2 class="section-title">美食类别</h2>
+        <div class="categories">
+            <div class="category-card">
+                <div class="category-icon">🍜</div>
+                <div class="category-name">中式快餐</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍣</div>
+                <div class="category-name">日本料理</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍕</div>
+                <div class="category-name">西式美食</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍲</div>
+                <div class="category-name">火锅</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🍱</div>
+                <div class="category-name">韩式料理</div>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">🥗</div>
+                <div class="category-name">健康轻食</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>美味在线</h3>
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">加入我们</a></li>
+                    <li><a href="#">商务合作</a></li>
+                    <li><a href="#">服务条款</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>用户帮助</h3>
+                <ul>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">用户指南</a></li>
+                    <li><a href="#">投诉建议</a></li>
+                    <li><a href="#">客服中心</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>商家服务</h3>
+                <ul>
+                    <li><a href="#">入驻申请</a></li>
+                    <li><a href="#">商家后台</a></li>
+                    <li><a href="#">运营指南</a></li>
+                    <li><a href="#">商家学院</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>关注我们</h3>
+                <ul>
+                    <li><a href="#">微信公众号</a></li>
+                    <li><a href="#">微博</a></li>
+                    <li><a href="#">抖音</a></li>
+                    <li><a href="#">小红书</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2023 美味在线 版权所有 | 食品经营许可证：JY13302230123456
+        </div>
+    </footer>
+
+    <script>
+        // 模拟点击操作处理
+        document.querySelectorAll('.restaurant-card').forEach(card => {
+            card.addEventListener('click', function() {
+                alert('即将跳转到餐厅详情页面');
+                // 在实际应用中，这里应该使用 window.location.href = '/restaurant/' + restaurantId;
+            });
+        });
+
+        document.querySelectorAll('.order-card').forEach(card => {
+            card.addEventListener('click', function() {
+                alert('即将跳转到订单详情页面');
+                // 在实际应用中，这里应该使用 window.location.href = '/order/' + orderId;
+            });
+        });
+
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.querySelector('.category-name').textContent;
+                alert(`即将跳转到 "${category}" 类别页面`);
+                // 在实际应用中，这里应该使用 window.location.href = '/category/' + categoryId;
+            });
+        });
+
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            const keyword = document.querySelector('.search-box input').value;
+            if (keyword.trim() !== '') {
+                alert(`正在搜索: ${keyword}`);
+                // 在实际应用中，这里应该提交搜索表单
+            } else {
+                alert('请输入搜索关键词');
+            }
+        });
+    </script>
+</body>
+</html>
