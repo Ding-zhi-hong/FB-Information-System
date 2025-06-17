@@ -206,15 +206,24 @@ def get_restrant_with_ID(id):
     connection.close()
     return restrant
 
-def add_restrant(id,name,place,areaid,money,time,labelid,businessid):
+def add_restrant(name,place,areaid,money,time,labelid,businessid):
     connection = create_connection()
     cursor = connection.cursor()
-    query = "INSERT INTO 餐厅 (餐厅ID, 名称,地址,区域ID,人均消费,营业时间,类别id,商家id) VALUES (%s,%s,%s, %s,%s,%s,%s,%s)"
-    cursor.execute(query, (id,name,place,areaid,money,time,labelid,businessid))
+    query = "INSERT INTO 餐厅 (名称,地址,区域ID,人均消费,营业时间,类别id,商家id) VALUES (%s,%s, %s,%s,%s,%s,%s)"
+    cursor.execute(query, (name,place,areaid,money,time,labelid,businessid))
     connection.commit()
     cursor.close()
     connection.close()
 
+
+def delete_restrant(id):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "DELETE FROM 餐厅 WHERE 餐厅ID=%s"
+    cursor.execute(query, (id,))
+    connection.commit()
+    cursor.close()
+    connection.close()
 #菜品
 def get_dishs(restrantid):
     connection = create_connection()
@@ -235,7 +244,14 @@ def add_dish(dishid,name,price,describe,yes_or_no,restrantid):
     cursor.close()
     connection.close()
 
-
+def delete_dish(restrant_id):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "DELETE FROM 菜品 WHERE 餐厅ID=%s"
+    cursor.execute(query, (restrant_id))
+    connection.commit()
+    cursor.close()
+    connection.close()
 #订单记录
 def get_orders_with_userid(userid):
     connection = create_connection()
@@ -326,15 +342,54 @@ def get_score_with_orderid(orderid):
     connection.close()
     return scores
 
-def add_score(scoreid,userid,restrantid,score,content):
+def add_score(userid,restrantid,dishid,score,content,id):
     connection = create_connection()
     cursor = connection.cursor()
-    query = "INSERT INTO 评价 (评价ID,用户ID,餐厅ID,评分,评论内容) VALUES (%s,%s,%s,%s,%s)"
-    cursor.execute(query, (scoreid,userid,restrantid,score,content))
+    query = "INSERT INTO 评价 (用户ID,餐厅ID,菜品ID,评分,评论内容,订单ID) VALUES (%s,%s,%s,%s,%s,%s)"
+    cursor.execute(query, (userid,restrantid,dishid,score,content,id))
     connection.commit()
     cursor.close()
     connection.close()
 
+def add_cart(restrantid,dishid,money,time):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "INSERT INTO 购物车 (餐厅ID,菜品ID,消费Money,下单时间) VALUES (%s,%s,%s,%s)"
+    cursor.execute(query, (restrantid, dishid,money,time))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
+def get_cart():
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 购物车 "
+    cursor.execute(query, ())
+    scores = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return scores
+
+def cancel_cart(dishid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query="DELETE FROM 购物车 WHERE 菜品ID = %s"
+    cursor.execute(query, (dishid,))
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
+def get_restrant_id(restrantid):
+    connection = create_connection()
+    cursor = connection.cursor()
+    query = "SELECT * FROM 餐厅 WHERE 餐厅ID = %s "
+    cursor.execute(query, (restrantid))
+    scores = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return scores[0]
 
 '''if __name__ == '__main__':
     #register_user("丁志宏2","1234","15255160712")

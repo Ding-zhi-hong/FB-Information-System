@@ -1,0 +1,58 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>购物车</title>
+    <!-- 引入Bootstrap样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">我的购物车</h2>
+
+        <!-- 商品列表 -->
+        <div class="list-group">
+
+            {% for dish in dishes %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>菜品ID: {{ dish[1] }}</h5>
+                        <p class="mb-1">
+                            餐厅ID: {{ dish[0] }}<br>
+                            价格: ￥{{ dish[2]}}<br>
+                            添加时间: {{ dish[3] }}
+                        </p>
+                    </div>
+                    <div>
+                        <form action="/cancel" method="post" style="display: inline-block;">
+                            <input type="hidden" name="dish_id" value="{{ dish[1] }}">
+                            <button type="submit" class="btn btn-danger btn-sm">取消</button>
+                        </form>
+                        <form action="/single_order" method="post" style="display: inline-block;">
+                            <input type="hidden" name="dish_id" value="{{ dish[1] }}">
+                            <input type="hidden" name="restrant_id" value="{{ dish[0] }}">
+                            <input type="hidden" name="money" value="{{ dish[2] }}">
+                            <input type="hidden" name="time" value="{{ dish[3] }}">
+                            <button type="submit" class="btn btn-primary btn-sm ms-2">单独下单</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- 总计和下单 -->
+        <div class="mt-4 p-3 bg-light rounded">
+            <div class="d-flex justify-content-between align-items-center">
+                {% set total = dishes | map(attribute='2') | map('float') | sum %}
+                <h4>总计：￥{{ "%.2f"|format(total) }}</h4>
+                <form action="/total_order" method="post">
+                    <button type="submit" class="btn btn-success btn-lg">全部下单</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

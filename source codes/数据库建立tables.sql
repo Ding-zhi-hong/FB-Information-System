@@ -1,6 +1,48 @@
 -- 创建数据库
 CREATE DATABASE IF NOT EXISTS FB CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+DELIMITER //
+
+CREATE TRIGGER AVGMONEY
+AFTER INSERT ON 订单记录
+FOR EACH ROW
+BEGIN
+    DECLARE avg_per_user DECIMAL(10,2);
+    
+    -- 计算每个用户在该餐厅的平均消费（每人总消费平均值）
+    SELECT AVG(user_total) INTO avg_per_user
+    FROM (
+        SELECT 
+            用户ID,
+            SUM(CAST(消费Money AS DECIMAL(10,2))) AS user_total
+        FROM 订单记录
+        WHERE 餐厅ID = NEW.餐厅ID
+        GROUP BY 用户ID
+    ) AS user_totals;
+    
+    -- 更新餐厅表的人均消费（使用隐式转换而非CAST）
+    UPDATE 餐厅
+    SET 人均消费 = 
+        CASE 
+            WHEN avg_per_user IS NULL THEN '0' 
+            ELSE FORMAT(avg_per_user, 2) 
+        END
+    WHERE 餐厅ID = NEW.餐厅ID;
+END//
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
 USE FB;
 #DROP DATABASE FB;
 -- 员工表
@@ -49,6 +91,16 @@ CREATE TABLE IF NOT EXISTS 区域表 (
 		
 );
 
+
+INSERT INTO 区域表(区域名称,上级区域ID,是否热门区域)
+VALUES('北京',1,'是');
+
+
+
+
+
+
+
 -- 餐厅表
 CREATE TABLE IF NOT EXISTS 餐厅 (
     餐厅ID INT NOT NULL AUTO_INCREMENT,
@@ -70,6 +122,9 @@ CREATE TABLE IF NOT EXISTS 类别 (
 		PRIMARY KEY (类别id)
 );
 
+INSERT INTO 类别(`类别名`)
+VALUES('西餐');
+
 
 -- 特色标签表
 CREATE TABLE IF NOT EXISTS 特色标签 (
@@ -77,6 +132,10 @@ CREATE TABLE IF NOT EXISTS 特色标签 (
     标签名 VARCHAR(255),
 		PRIMARY KEY (标签ID)
 );
+
+INSERT INTO 特色标签(标签名)
+VALUES('海鲜');
+
 
 -- 订单记录表
 CREATE TABLE IF NOT EXISTS 订单记录 (
@@ -86,8 +145,8 @@ CREATE TABLE IF NOT EXISTS 订单记录 (
     菜品ID INT,
     消费Money VARCHAR(255),
     下单时间 VARCHAR(255),
-    FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
-    FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID),
+    #FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
+    #FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID),
 		PRIMARY KEY (订单ID)
 );
 
@@ -115,21 +174,32 @@ CREATE TABLE IF NOT EXISTS 商家 (
 
 
 -- 添加外键关系 (图片中未明确但逻辑需要的关联)
-ALTER TABLE 评价
-ADD FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
-ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
+###ALTER TABLE 评价
+#ADD FOREIGN KEY (用户ID) REFERENCES 用户(用户PID),
+#ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
+
+
+
+
 
 ALTER TABLE 餐厅
-ADD COLUMN 商家id INT,
-ADD FOREIGN KEY (商家id) REFERENCES 商家(商家id);
+ADD COLUMN 商家id INT;
+#ADD FOREIGN KEY (商家id) REFERENCES 商家(商家id);
 
 
 ALTER TABLE 菜品
-ADD COLUMN 餐厅ID INT,
-ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
+ADD COLUMN 餐厅ID INT;
+#ADD FOREIGN KEY (餐厅ID) REFERENCES 餐厅(餐厅ID);
 
 ALTER TABLE 评价
 ADD COLUMN 订单ID INT;
 
 ALTER TABLE `员工`
 CHANGE COLUMN 餐厅ID 商家ID INT;
+
+
+
+
+
+
+

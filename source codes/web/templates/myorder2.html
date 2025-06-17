@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的订单 - 美食订购平台</title>
+    <title>商家订单管理 - 美食订购平台</title>
     <!-- 引入Bootstrap和Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,6 +15,7 @@
             --success: #43e97b;
             --warning: #ff9a44;
             --dark: #2c3e50;
+            --light-blue: #e8f4ff;
         }
 
         body {
@@ -50,61 +51,6 @@
             box-shadow: 0 8px 15px rgba(94, 114, 228, 0.3);
         }
 
-        .order-card {
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            margin-bottom: 25px;
-            border: none;
-            overflow: hidden;
-            background: white;
-        }
-
-        .order-card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            transform: translateY(-5px);
-        }
-
-        .order-header {
-            background: linear-gradient(to right, rgba(106, 17, 203, 0.05), rgba(37, 117, 252, 0.05));
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .order-id {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .order-info {
-            color: #5a6a85;
-            font-size: 0.95rem;
-        }
-
-        .price-badge {
-            background: linear-gradient(135deg, var(--success) 0%, #38f9d7 100%);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .btn-delete {
-            background: linear-gradient(135deg, var(--danger) 0%, #ff4b2b 100%);
-            border: none;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(255, 75, 43, 0.2);
-        }
-
-        .btn-delete:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 12px rgba(255, 75, 43, 0.3);
-        }
-
         .empty-state {
             text-align: center;
             padding: 80px 20px;
@@ -132,28 +78,136 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .order-detail-row {
-            border-bottom: 1px dashed #e0e0e0;
-            padding: 12px 0;
+        .stats-card {
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            border: none;
+            overflow: hidden;
+            background: white;
+            padding: 20px;
+            height: 100%;
         }
 
-        .order-detail-row:last-child {
+        .stats-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stats-card .label {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .stats-card:nth-child(1) .number {
+            color: var(--primary);
+        }
+
+        .stats-card:nth-child(2) .number {
+            color: var(--success);
+        }
+
+        .stats-card:nth-child(3) .number {
+            color: var(--warning);
+        }
+
+        .top-dishes {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .top-dishes li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top-dishes li:last-child {
             border-bottom: none;
         }
 
-        .order-info-label {
+        .dish-count {
+            background-color: var(--light-blue);
+            border-radius: 20px;
+            padding: 3px 10px;
             font-weight: 600;
-            color: #666;
+            color: var(--primary);
         }
 
-        .order-info-value {
-            color: #333;
-            font-size: 1.05rem;
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-top: 25px;
+            overflow: hidden;
         }
 
-        .timestamp {
-            color: #666;
-            font-style: italic;
+        .table-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .table-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .table thead th {
+            background-color: rgba(106, 17, 203, 0.05);
+            font-weight: 600;
+            color: #555;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(232, 244, 255, 0.5);
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, var(--danger) 0%, #ff4b2b 100%);
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 154, 68, 0.15);
+            color: var(--warning);
+        }
+
+        .status-completed {
+            background-color: rgba(67, 233, 123, 0.15);
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background-color: rgba(255, 65, 108, 0.15);
+            color: var(--danger);
+        }
+
+        footer {
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -163,78 +217,242 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="mb-0">
-                    <i class="fas fa-receipt me-3"></i>
-                    我的订单
-                    <p class="lead mb-0 mt-2 opacity-75">查看和管理您的所有订单记录</p>
+                    <i class="fas fa-chart-line me-3"></i>
+                    商家订单管理
+                    <p class="lead mb-0 mt-2 opacity-75">管理您的餐厅订单与销售数据</p>
                 </h1>
-                <a href="/userboard" class="btn btn-lg btn-back text-white">
-                    <i class="fas fa-arrow-left me-2"></i>返回用户面板
+                <a href="/businessboard" class="btn btn-lg btn-back text-white">
+                    <i class="fas fa-arrow-left me-2"></i>返回商家面板
                 </a>
             </div>
         </div>
     </div>
 
     <div class="container mb-5">
-        <!-- 订单列表 -->
-        <div class="row" id="orders-container">
-            <!-- 订单卡片将通过后端渲染 -->
-            {% if orders %}
-                {% for order in orders %}
-                    <div class="col-md-6">
-                        <div class="card order-card fade-in" style="animation-delay: {{ loop.index0 * 0.1 }}s">
-                            <div class="order-header">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>订单 <span class="order-id">#{{ order[0] }}</span></h5>
-                                    <span class="price-badge">¥{{ order[4] }}</span>
-                                </div>
-                                <div class="order-info">
-                                    <div>
-                                        <i class="fas fa-user me-2"></i><span class="order-info-label">用户ID: </span>
-                                        <span class="order-info-value">{{ order[1] }}</span>
-                                    </div>
-                                    <div class="mt-1">
-                                        <i class="fas fa-store me-2"></i><span class="order-info-label">餐厅ID: </span>
-                                        <span class="order-info-value">{{ order[2] }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="order-detail-row">
-                                    <span class="order-info-label"><i class="fas fa-hamburger me-2"></i>菜品ID:</span>
-                                    <span class="order-info-value">{{ order[3] }}</span>
-                                </div>
-                                <div class="order-detail-row">
-                                    <span class="order-info-label"><i class="fas fa-money-bill-wave me-2"></i>消费金额:</span>
-                                    <span class="order-info-value">¥{{ order[4] }}</span>
-                                </div>
-                                <div class="order-detail-row">
-                                    <span class="order-info-label"><i class="fas fa-clock me-2"></i>下单时间:</span>
-                                    <span class="order-info-value timestamp">{{ order[5] }}</span>
-                                </div>
+        <!-- 统计信息卡片 -->
+        <div class="row mb-4">
+            <!-- 总营业额卡片 -->
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card fade-in" style="animation-delay: 0.1s">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div class="number">¥{{ sum_money }}</div>
+                            <div class="label">总营业额</div>
+                        </div>
+                        <i class="fas fa-money-bill-wave" style="font-size: 2.5rem; color: var(--success);"></i>
+                    </div>
 
-                                <!-- 删除订单表单 -->
-                                <form method="POST" action="/myorders" class="mt-4">
-                                    <input type="hidden" name="order_id" value="{{ order[0] }}">
-                                    <button type="submit" class="btn btn-delete w-100 py-2">
-                                        <i class="fas fa-trash-alt me-2"></i>删除订单
-                                    </button>
-                                </form>
-                            </div>
+                </div>
+            </div>
+
+            <!-- 总订单数卡片 -->
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card fade-in" style="animation-delay: 0.2s">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <div class="number">{{ sum_orders }}</div>
+                            <div class="label">总订单数</div>
+                        </div>
+                        <i class="fas fa-shopping-bag" style="font-size: 2.5rem; color: var(--primary);"></i>
+                    </div>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">已完成：{{ sum_orders }}</span>
+
                         </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <!-- 没有订单时的空状态 -->
-                <div class="empty-state fade-in">
-                    <i class="fas fa-file-invoice"></i>
-                    <h3 class="mb-3">您还没有任何订单</h3>
-                    <p class="text-muted mb-4">在餐厅下单后，您的订单将显示在这里</p>
-                    <a href="/userboard" class="btn btn-back text-white">
-                        <i class="fas fa-utensils me-2"></i>去餐厅下单
-                    </a>
                 </div>
-            {% endif %}
+            </div>
+           {% if dishes|length >= 3 %}
+    <!-- 3款及以上热销菜品 -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stats-card fade-in" style="animation-delay: 0.3s">
+            <div class="d-flex align-items-center mb-2">
+                <div class="flex-grow-1">
+                    <div class="number">3款热销</div>
+                    <div class="label">热门菜品</div>
+                </div>
+                <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+            </div>
+            <ul class="top-dishes">
+                <li>{{ dishes[0][0] }} <span class="dish-count">{{ dishes[0][1] }}份</span></li>
+                <li>{{ dishes[1][0] }} <span class="dish-count">{{ dishes[1][1] }}份</span></li>
+                <li>{{ dishes[2][0] }} <span class="dish-count">{{ dishes[2][1] }}份</span></li>
+            </ul>
         </div>
+    </div>
+
+{% elif dishes|length > 0 %}
+    <!-- 1-2款热销菜品 -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stats-card fade-in" style="animation-delay: 0.3s">
+            <div class="d-flex align-items-center mb-2">
+                <div class="flex-grow-1">
+                    <div class="number">{{ dishes|length }}款热销</div>
+                    <div class="label">热门菜品</div>
+                </div>
+                <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+            </div>
+            <ul class="top-dishes">
+                {% for dish in dishes %}
+                <li>{{ dish[0] }} <span class="dish-count">{{ dish[1] }}份</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% else %}
+    <!-- 无热销菜品 -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stats-card fade-in" style="animation-delay: 0.3s">
+            <div class="d-flex align-items-center mb-2">
+                <div class="flex-grow-1">
+                    <div class="number">无热销</div>
+                    <div class="label">热门菜品</div>
+                </div>
+                <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+            </div>
+            <div class="no-dishes">
+                <i class="fas fa-utensils"></i>
+                <div>暂无热销菜品</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+
+
+        {% if highscores|length >= 3 %}
+         <!-- 热门菜品卡片 -->
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card fade-in" style="animation-delay: 0.3s">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="flex-grow-1">
+                            <div class="number">3款高分</div>
+                            <div class="label">热门菜品</div>
+                        </div>
+                        <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+                    </div>
+                    <ul class="top-dishes">
+                        <li>highscores[0][0] <span class="dish-count">highscores[0][1]分</span></li>
+                        <li>highscores[1][0] <span class="dish-count">highscores[1][1]分</span></li>
+                        <li>highscores[2][0]<span class="dish-count">highscores[2][1]分</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    {% elif dishes|length > 0 %}
+    <!-- 1-2款热销菜品 -->
+   <div class="col-lg-4 col-md-6 mb-3">
+                <div class="stats-card fade-in" style="animation-delay: 0.3s">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="flex-grow-1">
+                            <div class="number">{{ highscores|length }}款高分</div>
+                            <div class="label">热门菜品</div>
+                        </div>
+                        <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+                    </div>
+                    <ul class="top-dishes">
+                {% for highscore in highscores %}
+                <li>{{ highscore[0] }} <span class="dish-count">{{ highscore[1] }}分</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% else %}
+    <!-- 无热销菜品 -->
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="stats-card fade-in" style="animation-delay: 0.3s">
+            <div class="d-flex align-items-center mb-2">
+                <div class="flex-grow-1">
+                    <div class="number">无高分</div>
+                    <div class="label">高分菜品</div>
+                </div>
+                <i class="fas fa-fire" style="font-size: 2.5rem; color: var(--warning);"></i>
+            </div>
+            <div class="no-dishes">
+                <i class="fas fa-utensils"></i>
+                <div>暂无高分菜品</div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- 订单表格 -->
+        <div class="table-container fade-in" style="animation-delay: 0.4s">
+            <div class="table-title">
+                <i class="fas fa-list"></i> 所有订单记录
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>订单ID</th>
+                            <th>用户ID</th>
+                            <th>菜品信息</th>
+                            <th>金额</th>
+                            <th>下单时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% if  orders %}
+                      {% for order in orders %}
+                        <tr>
+                            <td>{{order[0]}}</td>
+                            <td>{{order[1]}}</td>
+                            <td>
+                                <div>{{order[3]}}</div>
+
+                            </td>
+                            <td>{{order[4]}}</td>
+                            <td>{{order[5]}}</td>
+                            <td><span class="order-status status-completed">用户已下单</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-action btn-delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                      {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+        <!-- 没有订单时的空状态 -->
+        {% if not orders %}
+            <div class="empty-state fade-in">
+                <i class="fas fa-file-invoice"></i>
+                <h3 class="mb-3">您还没有任何订单</h3>
+                <p class="text-muted mb-4">当有新订单时，系统将会在这里显示</p>
+                <a href="/businessboard" class="btn btn-back text-white">
+                    <i class="fas fa-store me-2"></i>管理餐厅
+                </a>
+            </div>
+        {% endif %}
     </div>
 
     <!-- 页脚 -->
@@ -242,8 +460,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
-                    <p class="mb-0">© 2023 美食订购平台 版权所有 | 顾客至上，美食无限</p>
-                    <p class="text-secondary mt-2"><i class="fas fa-phone me-2"></i> 400-888-9999 | <i class="fas fa-envelope me-2"></i> support@foodorder.com</p>
+                    <p class="mb-0">© 2023 美食订购平台 版权所有 | 商家中心 1.0</p>
+                    <p class="text-secondary mt-2"><i class="fas fa-headset me-2"></i> 商家服务专线: 400-888-9999</p>
                 </div>
             </div>
         </div>
@@ -251,5 +469,34 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 交互效果 - 更新订单状态
+        document.querySelectorAll('.btn-action').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                if (this.classList.contains('btn-outline-primary')) {
+                    // 更新状态为已完成
+                    const statusCell = row.querySelector('.order-status');
+                    statusCell.textContent = '已完成';
+                    statusCell.className = 'order-status status-completed';
+
+                    // 更新按钮为删除按钮
+                    this.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    this.classList.replace('btn-outline-primary', 'btn-delete');
+                }
+            });
+        });
+
+        // 删除订单功能
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                row.classList.add('fade-out');
+                setTimeout(() => {
+                    row.remove();
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>

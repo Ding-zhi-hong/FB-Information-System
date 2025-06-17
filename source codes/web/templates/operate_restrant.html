@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经营餐厅</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --secondary-color: #d35400;
+            --light-bg: #f9f7f3;
+            --card-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            --border-radius: 12px;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --info-color: #3498db;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            padding-top: 0;
+        }
+
+        .header-bg {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            padding: 35px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .back-to-main {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .restaurant-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .restaurant-img {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .restaurant-details {
+            padding: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f1f1f1;
+            padding-bottom: 10px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            flex: 0 0 100px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .price-tag {
+            background: rgba(231, 126, 34, 0.1);
+            color: var(--secondary-color);
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .action-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin: 50px 0;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .menu-btn {
+            background: var(--info-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .menu-btn:hover {
+            background: #2980b9;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .edit-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .edit-btn:hover {
+            background: #27ae60;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .info-highlight {
+            background: rgba(231, 126, 34, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            margin-bottom: 15px;
+        }
+
+        .add-restaurant-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .add-restaurant-btn:hover {
+            background: #27ae60;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+        }
+
+        .restaurant-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .status-open {
+            background: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+
+        .status-closed {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .restaurant-img {
+                height: 180px;
+            }
+        }
+
+        /* 餐厅背景图样式 */
+        .restaurant-bg-1 {
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1470');
+        }
+
+        .restaurant-bg-2 {
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1470');
+        }
+
+        .restaurant-bg-3 {
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1470');
+        }
+
+        .restaurant-bg-4 {
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1554679665-f5537f187268?q=80&w=1470');
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <div class="back-to-main">
+        <a href="/businessboard" class="btn action-btn">
+            <i class="fas fa-arrow-left me-2"></i>返回管理中心
+        </a>
+    </div>
+
+    <!-- 头部区域 -->
+    <div class="header-bg">
+        <div class="container">
+            <div class="header-actions">
+                <div class="info-highlight">
+                    <i class="fas fa-info-circle me-2"></i>
+                    当前显示所有经营餐厅信息，共 <strong>{{ restrantdata|length }}</strong> 家餐厅
+                </div>
+                <a href="#" class="btn add-restaurant-btn" data-bs-toggle="modal" data-bs-target="#addRestaurantModal">
+                    <i class="fas fa-plus me-2"></i>新增餐厅
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- 餐厅列表 -->
+        <div class="row">
+            {% if restrantdata %}
+                {% for restaurant in restrantdata %}
+                {% set bg_class = "restaurant-bg-" + (loop.index % 4 + 1)|string %}
+                <div class="col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-img {{ bg_class }}">
+                            <h2 class="restaurant-name">{{ restaurant[1] }}</h2>
+                            <div class="restaurant-status status-open">
+                                <i class="fas fa-door-open me-1"></i>营业中
+                            </div>
+                        </div>
+
+                        <div class="restaurant-details">
+                            <div class="info-row">
+                                <div class="info-label">餐厅ID:</div>
+                                <div class="info-value">{{ restaurant[0] }}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">餐厅名称:</div>
+                                <div class="info-value">{{ restaurant[1] }}</div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">地址:</div>
+                                <div class="info-value">{{ restaurant[2] }}</div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">区域:</div>
+                                <div class="info-value">{{ restaurant[3] }}</div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">人均消费:</div>
+                                <div class="info-value">
+                                    <div class="price-tag">
+                                        ¥{{ restaurant[4] }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">营业时间:</div>
+                                <div class="info-value">{{ restaurant[5] }}</div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">商家老板ID:</div>
+                                <div class="info-value">{{ restaurant[7] }}</div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-label">餐厅类别:</div>
+                                <div class="info-value">{{ restaurant[6] }}</div>
+                            </div>
+
+                            <div class="action-buttons mt-3">
+                                <a href="/operate_dishes?restrantid={{ restaurant[0] }}" class="btn menu-btn">
+                                    <i class="fas fa-utensils me-2"></i>查看菜单
+                                </a>
+
+                                <button class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#editRestaurantModal"
+                                    data-restaurant-id="{{ restaurant[0] }}"
+                                    data-name="{{ restaurant[1] }}"
+                                    data-address="{{ restaurant[2] }}"
+                                    data-area="{{ restaurant[3] }}"
+                                    data-price="{{ restaurant[4] }}"
+                                    data-hours="{{ restaurant[5] }}"
+                                    data-category="{{ restaurant[6] }}">
+                                    <i class="fas fa-edit me-2"></i>修改信息
+                                </button>
+
+                                <button class="btn delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                    data-restaurant-id="{{ restaurant[0] }}"
+                                    data-name="{{ restaurant[1] }}">
+                                    <i class="fas fa-trash me-2"></i>删除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="fas fa-utensils"></i>
+                        <h3 class="mb-3">暂无餐厅数据</h3>
+                        <p class="text-muted">抱歉，当前没有找到餐厅信息</p>
+                        <button class="btn add-restaurant-btn" data-bs-toggle="modal" data-bs-target="#addRestaurantModal">
+                            <i class="fas fa-plus me-2"></i>新增餐厅
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-utensils me-2"></i>美食天地</h5>
+                    <p>为您提供城市中最优质的美食体验</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>联系我们</h5>
+                    <p><i class="fas fa-phone me-2"></i> 400-123-4567</p>
+                    <p><i class="fas fa-envelope me-2"></i> support@foodheaven.com</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>关注我们</h5>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="me-3 text-white fs-4"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="me-3 text-white fs-4"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="me-3 text-white fs-4"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">© 2023 美食天地 - 让美食触手可及</p>
+        </div>
+    </footer>
+
+    <!-- 添加餐厅模态框 -->
+    <div class="modal fade" id="addRestaurantModal" tabindex="-1" aria-labelledby="addRestaurantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRestaurantModalLabel"><i class="fas fa-plus me-2"></i>添加新餐厅</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRestaurantForm" method="POST" action="/add_restrant">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="addName" class="form-label">餐厅名称*</label>
+                                <input type="text" class="form-control" id="addName" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="addAddress" class="form-label">餐厅地址*</label>
+                                <input type="text" class="form-control" id="addAddress" name="address" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="addArea" class="form-label">所在区域*</label>
+                                <input type="text" class="form-control" id="addArea" name="area" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="addPrice" class="form-label">人均消费*</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">¥</span>
+                                    <input type="number" class="form-control" id="addPrice" name="price" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="addHours" class="form-label">营业时间*</label>
+                                <input type="text" class="form-control" id="addHours" name="hours" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="addCategory" class="form-label">餐厅类别*</label>
+                                <input type="text" class="form-control" id="addCategory" name="category" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" form="addRestaurantForm" class="btn action-btn">添加餐厅</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑餐厅模态框 -->
+    <div class="modal fade" id="editRestaurantModal" tabindex="-1" aria-labelledby="editRestaurantModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRestaurantModalLabel"><i class="fas fa-edit me-2"></i>修改餐厅信息</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRestaurantForm" method="POST" action="/update_restaurant">
+                        <input type="hidden" name="restaurant_id" id="editRestaurantId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editName" class="form-label">餐厅名称*</label>
+                                <input type="text" class="form-control" id="editName" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editAddress" class="form-label">餐厅地址*</label>
+                                <input type="text" class="form-control" id="editAddress" name="address" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editArea" class="form-label">所在区域*</label>
+                                <input type="text" class="form-control" id="editArea" name="area" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editPrice" class="form-label">人均消费*</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">¥</span>
+                                    <input type="number" class="form-control" id="editPrice极" name="price" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editHours" class="form-label">营业时间*</label>
+                                <input type="text" class="form-control" id="editHours" name="hours" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editCategory" class="form-label">餐厅类别*</label>
+                                <input type="text" class="form-control" id="editCategory" name="category" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" form="editRestaurantForm" class="btn action-btn">保存修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认模态框 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>删除确认</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要删除 <strong id="deleteRestaurantName"></strong> 吗？</p>
+                    <p class="text-danger"><i class="fas fa-exclamation-circle me-2"></i>此操作不可逆，所有相关数据将被永久删除！</p>
+                    <form id="deleteRestaurantForm" method="POST" action="/delete_restrant">
+                        <input type="hidden" name="restaurant_id" id="deleteRestaurantId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" form="deleteRestaurantForm" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 当DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 编辑模态框显示时的处理
+            var editModal = document.getElementById('editRestaurantModal');
+            editModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var restaurantId = button.getAttribute('data-restaurant-id');
+                var name = button.getAttribute('data-name');
+                var address = button.getAttribute('data-address');
+                var area = button.getAttribute('data-area');
+                var price = button.getAttribute('data-price');
+                var hours = button.getAttribute('data-hours');
+                var category = button.getAttribute('data-category');
+
+                // 设置表单值
+                document.getElementById('editRestaurantId').value = restaurantId;
+                document.getElementById('editName').value = name;
+                document.getElementById('editAddress').value = address;
+                document.getElementById('editArea').value = area;
+                document.getElementById('editPrice').value = price;
+                document.getElementById('editHours').value = hours;
+                document.getElementById('editCategory').value = category;
+            });
+
+            // 删除模态框显示时的处理
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var restaurantId = button.getAttribute('data-restaurant-id');
+                var restaurantName = button.getAttribute('data-name');
+
+                // 设置表单值
+                document.getElementById('deleteRestaurantId').value = restaurantId;
+                document.getElementById('deleteRestaurantName').textContent = restaurantName;
+            });
+
+            // 添加表单提交处理（实际应用中会由后端处理）
+            document.getElementById('addRestaurantForm').addEventListener('submit', function(e) {
+                // 在实际应用中，验证后提交
+                // 此处为模拟提交
+                console.log("添加餐厅表单提交");
+            });
+
+            // 编辑表单提交处理
+            document.getElementById('editRestaurantForm').addEventListener('submit', function(e) {
+                // 验证表单
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.add('was-validated');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

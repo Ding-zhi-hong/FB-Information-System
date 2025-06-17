@@ -487,36 +487,7 @@
                 width: 130px;
                 height: 150px;
             }
-           .user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: relative;
-}
 
-.cart-link {
-    margin-left: auto; /* 推至最右侧 */
-    color: #1A535C; /* 保持与头像颜色一致 */
-    text-decoration: none;
-    position: relative;
-    padding: 8px;
-    transition: color 0.3s;
-}
-
-.cart-link:hover {
-    color: #0F3A40;
-}
-
-.cart-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #ff4d4d;
-    color: white;
-    border-radius: 50%;
-    padding: 3px 8px;
-    font-size: 0.8em;
-}
             .category-icon {
                 width: 60px;
                 height: 60px;
@@ -539,23 +510,11 @@
                 <li><a href="/myorders">我的订单</a></li>
                 <li><a href="/restrants">餐厅搜索</a></li>
                 <li><a href="/usercenter">用户中心</a></li>
-                <li><a href="/append">点单结算</a></li>
-                <li><a href="/logout">切换账号</a></li>
             </ul>
             <div class="user-info">
-    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTUzNUMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg==" alt="用户头像">
-    <span>欢迎，{{ session['username'] }}</span>
-
-    <!-- 新增购物车链接 -->
-    <a href="#" class="cart-link">
-        <i class="fas fa-shopping-cart"></i>
-        <!-- 可选购物车数量提示 -->
-        <span class="cart-count">{{ cart_items_count }}</span>
-    </a>
-</div>
-
-
-
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMxQTUzNUMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMjF2LTJhNCA0IDAgMCAwLTQtNEg4YTQgNCAwIDAgMC00IDR2MiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCIvPjwvc3ZnPg==" alt="用户头像">
+                <span>欢迎，{{ session['username'] }}</span>
+            </div>
         </div>
     </header>
 

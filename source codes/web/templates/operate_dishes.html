@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>餐厅菜单管理 - 美食天地</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --secondary-color: #d35400;
+            --light-bg: #f9f7f3;
+            --card-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            --border-radius: 12px;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --info-color: #3498db;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            padding-top: 0;
+        }
+
+        .header-bg {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            padding: 35px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .restaurant-header {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .restaurant-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .dish-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+
+        .dish-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1517248135467-4极7edcad34c4?q=80&w=1470');
+        }
+
+        .dish-info {
+            padding: 20px;
+        }
+
+        .dish-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dish-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .dish-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .featured-tag {
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .add-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .add-btn:hover {
+            background: #27ae60;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .edit-btn {
+            background: var(--info-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .edit-btn:hover {
+            background: #2980b9;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .empty-dishes {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            margin: 50px 0;
+        }
+
+        .divider {
+            border-bottom: 1px solid #eee;
+            margin: 30px 0;
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 0;
+        }
+
+        .dish-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .modal-content {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+        }
+
+        .featured-check {
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .dish-name {
+                flex-direction: column;
+            }
+
+            .dish-price {
+                margin-top: 10px;
+            }
+
+            .dish-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .edit-btn, .delete-btn {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <div class="back-btn">
+        <a href="/restrant_manange" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>返回餐厅列表
+        </a>
+    </div>
+
+    <!-- 头部区域 -->
+    <div class="header-bg">
+        <div class="container">
+            <h1 class="text-white text-center mb-4">餐厅菜单管理</h1>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- 餐厅头部信息 -->
+        <div class="restaurant-header">
+            <h2 class="restaurant-name">当前餐厅菜单</h2>
+            <div class="action-buttons">
+                <button class="btn add-btn" data-bs-toggle="modal" data-bs-target="#addDishModal">
+                    <i class="fas fa-plus me-2"></i>新增菜品
+                </button>
+            </div>
+        </div>
+
+        <!-- 菜品列表 -->
+        <div id="dishes-container">
+            {% if dishes %}
+                {% set grouped_dishes = {} %}
+                {% for dish in dishes %}
+                    {% set category = "特色菜" if dish[4] else "常规菜品" %}
+                    {% if category not in grouped_dishes %}
+                        {% set _ = grouped_dishes.update({category: []}) %}
+                    {% endif %}
+                    {% set _ = grouped_dishes[category].append(dish) %}
+                {% endfor %}
+
+                {% for category, category_dishes in grouped_dishes.items() %}
+                <div class="category-section">
+                    <h3 class="category-title">{{ category }}</h3>
+                    <div class="row">
+                        {% for dish in category_dishes %}
+                        {% set dish_id = dish[0] %}
+                        {% set dish_name = dish[1] %}
+                        {% set dish_price = dish[2] %}
+                        {% set dish_desc = dish[3] %}
+                        {% set is_featured = dish[4] %}
+                        {% set restaurant_id = dish[5] %}
+
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="dish-card">
+                                <div class="dish-image"></div>
+                                <div class="dish-info">
+                                    {% if is_featured=='1' %}
+                                    <div class="featured-tag">
+                                        <i class="fas fa-star me-2"></i>特色推荐
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="dish-name">
+                                        <span>{{ dish_name }}</span>
+                                        <span class="dish-price">¥{{ dish_price }}</span>
+                                    </div>
+
+                                    <p class="dish-description">
+                                        {% if dish_desc %}
+                                            {{ dish_desc }}
+                                        {% else %}
+                                            暂无描述
+                                        {% endif %}
+                                    </p>
+
+                                    <div class="text-muted small mb-3">
+                                        菜品ID: {{ dish_id }}
+                                    </div>
+
+                                    <div class="dish-actions">
+                                        <button class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#editDishModal"
+                                                data-dish-id="{{ dish_id }}"
+                                                data-dish-name="{{ dish_name }}"
+                                                data-dish-price="{{ dish_price }}"
+                                                data-dish-desc="{{ dish_desc or '' }}"
+                                                data-dish-featured="{{ is_featured }}">
+                                            <i class="fas fa-edit me-2"></i>编辑
+                                        </button>
+
+                                        <button class="btn delete-btn" data-bs-toggle="modal" data-bs-target="#deleteDishModal"
+                                                data-dish-id="{{ dish_id }}"
+                                                data-dish-name="{{ dish_name }}">
+                                            <i class="fas fa-trash me-2"></i>删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if not loop.last %}
+                    <div class="divider"></div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-dishes">
+                    <i class="fas fa-utensils fa-4x mb-4" style="color: #ddd;"></i>
+                    <h3 class="mb-3">暂无菜品信息</h3>
+                    <p class="text-muted">抱歉，该餐厅还没有添加菜品</p>
+                    <button class="btn add-btn" data-bs-toggle="modal" data-bs-target="#addDishModal">
+                        <i class="fas fa-plus me-2"></i>添加新菜品
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- 添加菜品模态框 -->
+    <div class="modal fade" id="addDishModal" tabindex="-1" aria-labelledby="addDishModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDishModalLabel"><i class="fas fa-plus me-2"></i>添加新菜品</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/add_dish">
+                    <div class="modal-body">
+                        <input type="hidden" name="restaurant_id" value="{{ restaurant_id }}">
+
+                        <div class="mb-3">
+                            <label for="dishName" class="form-label">菜品名称*</label>
+                            <input type="text" class="form-control" id="dishName" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dishPrice" class="form-label">价格*</label>
+                            <div class="input-group">
+                                <span class="input-group-text">¥</span>
+                                <input type="number" step="0.01" min="0" class="form-control" id="dishPrice" name="price" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dishDesc" class="form-label">菜品描述</label>
+                            <textarea class="form-control" id="dishDesc" name="description" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dishImage" class="form-label">菜品图片</label>
+                            <input class="form-control" type="file" id="dishImage">
+                            <small class="form-text text-muted">暂未实现图片上传功能，仅界面展示</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="featuredCheck" name="is_featured">
+                                <label class="form-check-label" for="featuredCheck">
+                                    设为特色推荐菜
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">添加菜品</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑菜品模态框 -->
+    <div class="modal fade" id="editDishModal" tabindex="-1" aria-labelledby="editDishModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDishModalLabel"><i class="fas fa-edit me-2"></i>编辑菜品</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/update_dish">
+                    <div class="modal-body">
+                        <input type="hidden" name="dish_id" id="editDishId">
+                        <input type="hidden" name="restaurant_id" value="{{ restaurant_id }}">
+
+                        <div class="mb-3">
+                            <label for="editDishName" class="form-label">菜品名称*</label>
+                            <input type="text" class="form-control" id="editDishName" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editDishPrice" class="form-label">价格*</label>
+                            <div class="input-group">
+                                <span class="input-group-text">¥</span>
+                                <input type="number" step="0.01" min="0" class="form-control" id="editDishPrice" name="price" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editDishDesc" class="form-label">菜品描述</label>
+                            <textarea class="form-control" id="editDishDesc" name="description" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editDishImage" class="form-label">菜品图片</label>
+                            <input class="form-control" type="file" id="editDishImage">
+                            <small class="form-text text-muted">暂未实现图片上传功能，仅界面展示</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="editFeaturedCheck" name="is_featured">
+                                <label class="form-check-label" for="editFeaturedCheck">
+                                    设为特色推荐菜
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">保存更改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除菜品模态框 -->
+    <div class="modal fade" id="deleteDishModal" tabindex="-1" aria-labelledby="deleteDishModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteDishModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>删除菜品确认</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要删除菜品 "<strong id="deleteDishName"></strong>" 吗？</p>
+                    <p class="text-danger"><i class="fas fa-exclamation-circle me-2"></i>此操作不可逆，菜品信息将永久删除！</p>
+                    <form id="deleteDishForm" method="POST" action="/delete_dish">
+                        <input type="hidden" name="dish_id" id="deleteDishId">
+                        <input type="hidden" name="restaurant_id" value="{{ restaurant_id }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" form="deleteDishForm" class="btn btn-danger">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 当DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 编辑菜品模态框显示时的处理
+            var editDishModal = document.getElementById('editDishModal');
+            editDishModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+
+                // 从data属性中提取菜品信息
+                var dishId = button.getAttribute('data-dish-id');
+                var dishName = button.getAttribute('data-dish-name');
+                var dishPrice = button.getAttribute('data-dish-price');
+                var dishDesc = button.getAttribute('data-dish-desc');
+                var isFeatured = button.getAttribute('data-dish-featured');
+
+                // 设置表单值
+                document.getElementById('editDishId').value = dishId;
+                document.getElementById('editDishName').value = dishName;
+                document.getElementById('editDishPrice').value = dishPrice;
+                document.getElementById('editDishDesc').value = dishDesc;
+
+                // 设置特色菜品勾选状态
+                var featuredCheck = document.getElementById('editFeaturedCheck');
+                featuredCheck.checked = (isFeatured === "1");
+            });
+
+            // 删除菜品模态框显示时的处理
+            var deleteDishModal = document.getElementById('deleteDishModal');
+            deleteDishModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+
+                // 从data属性中提取菜品信息
+                var dishId = button.getAttribute('data-dish-id');
+                var dishName = button.getAttribute('data-dish-name');
+
+                // 设置表单值
+                document.getElementById('deleteDishId').value = dishId;
+                document.getElementById('deleteDishName').textContent = dishName;
+            });
+
+            // 添加表单验证（可选）
+            document.getElementById('addDishForm').addEventListener('submit', function(e) {
+                var name = document.getElementById('dishName').value;
+                var price = document.getElementById('dishPrice').value;
+
+                if (!name || !price) {
+                    e.preventDefault();
+                    alert('请填写完整的菜品信息');
+                }
+            });
+
+            document.getElementById('editDishForm').addEventListener('submit', function(e) {
+                var name = document.getElementById('editDishName').value;
+                var price = document.getElementById('editDishPrice').value;
+
+                if (!name || !price) {
+                    e.preventDefault();
+                    alert('请填写完整的菜品信息');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
